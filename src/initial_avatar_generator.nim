@@ -46,28 +46,42 @@ proc drawText(ctx: Context, text: string, position: Vec2) =
   ctx.fillText(text, position)
 
 proc generateInitialsImage(name: string, outputPath: string) =
+  let initials = getInitials(name)
+  if initials.len == 0:
+    raise newException(ValueError, "Invalid input: Unable to generate initials from the given name")
+  
   randomize()
   let 
-    initials = getInitials(name)
     width = 500
     height = 500
     image = createImage(width, height)
     ctx = newContext(image)
     bgColor = generateRandomColor()
-
+  
   drawBackground(ctx, width.float32, height.float32, bgColor)
   setupTextProperties(ctx)
   let textPosition = calculateTextPosition(ctx, initials, width.float32, height.float32)
   drawText(ctx, initials, textPosition)
-
   image.writeFile(outputPath)
   echo "Image saved to: ", outputPath
 
 when isMainModule:
   if paramCount() < 1:
-    echo "Usage: nim c -r src/name_generator.nim <name>"
+    echo "Usage: ./initial_avatar_generator 'john doe'"
     quit(1)
-  let
-    name = paramStr(1)
-    outputPath = "initials_" & name.replace(" ", "_") & ".png"
-  generateInitialsImage(name, outputPath)
+  
+  let name = paramStr(1)  
+  if name.strip().len == 0:
+    echo "Error: Empty name provided"
+    quit(1)
+  
+  let outputPath = "initials_" & name.replace(" ", "_") & ".png"
+  
+  try:
+    generateInitialsImage(name, outputPath)
+  except ValueError as e:
+    echo "Error: ", e.msg
+    quit(1)
+  except IOError:
+    echo "Error: Unable to save the image"
+    quit(1)

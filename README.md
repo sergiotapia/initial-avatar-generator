@@ -1,5 +1,14 @@
 # Initial Avatar Generator
 
+## Development
+
+```
+nimble install
+./initial_avatar_generator 'Sergio Tapia'
+```
+
+## Usage
+
 Use this example script, make your own changes, and quickly
 generate avatar's for your users based on their initials.
 
@@ -10,7 +19,7 @@ https://github.com/sergiotapia/initial-avatar-generator/blob/master/src/initial_
 Here's how to use it:
 
 ```
-./initial_avatar_generator "Sergio Tapia"
+./initial_avatar_generator 'Sergio Tapia'
 ```
 
 ![image](https://raw.githubusercontent.com/sergiotapia/initial-avatar-generator/master/initials_Sergio_Tapia.png)
